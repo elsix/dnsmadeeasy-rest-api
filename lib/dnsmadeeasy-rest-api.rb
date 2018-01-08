@@ -95,54 +95,54 @@ class DnsMadeEasy
     post "/dns/managed/#{get_id_by_domain(domain_name, domain_id)}/records/", body.merge(options)
   end
 
-  def create_a_record(domain_name, name, value, options = {})
+  def create_a_record(domain_name, name, value, options = {}, domain_id=-1)
     # TODO: match IPv4 for value
-    create_record domain_name, name, 'A', value, options
+    create_record domain_name, name, 'A', value, options, domain_id
   end
 
-  def create_aaaa_record(domain_name, name, value, options = {})
+  def create_aaaa_record(domain_name, name, value, options = {}, domain_id=-1)
     # TODO: match IPv6 for value
-    create_record domain_name, name, 'AAAA', value, options
+    create_record domain_name, name, 'AAAA', value, options, domain_id
   end
 
-  def create_ptr_record(domain_name, name, value, options = {})
+  def create_ptr_record(domain_name, name, value, options = {}, domain_id=-1)
     # TODO: match PTR value
-    create_record domain_name, name, 'PTR', value, options
+    create_record domain_name, name, 'PTR', value, options, domain_id
   end
 
-  def create_txt_record(domain_name, name, value, options = {})
+  def create_txt_record(domain_name, name, value, options = {}, domain_id=-1)
     # TODO: match TXT value
-    create_record domain_name, name, 'TXT', value, options
+    create_record domain_name, name, 'TXT', value, options, domain_id
   end
 
-  def create_cname_record(domain_name, name, value, options = {})
+  def create_cname_record(domain_name, name, value, options = {}, domain_id=-1)
     # TODO: match CNAME value
-    create_record domain_name, name, 'CNAME', value, options
+    create_record domain_name, name, 'CNAME', value, options, domain_id
   end
 
-  def create_ns_record(domain_name, name, value, options = {})
+  def create_ns_record(domain_name, name, value, options = {}, domain_id=-1)
     # TODO: match domainname for value
-    create_record domain_name, name, 'NS', value, options
+    create_record domain_name, name, 'NS', value, options, domain_id
   end
 
-  def create_spf_record(domain_name, name, value, options = {})
-    create_record domain_name, name, 'SPF', value, options
+  def create_spf_record(domain_name, name, value, options = {}, domain_id=-1)
+    create_record domain_name, name, 'SPF', value, options, domain_id
   end
 
-  def create_mx_record(domain_name, name, priority, value, options = {})
+  def create_mx_record(domain_name, name, priority, value, options = {}, domain_id=-1)
     options.merge!('mxLevel' => priority)
 
-    create_record domain_name, name, 'MX', value, options
+    create_record domain_name, name, 'MX', value, options, domain_id
   end
 
-  def create_srv_record(domain_name, name, priority, weight, port, value, options = {})
+  def create_srv_record(domain_name, name, priority, weight, port, value, options = {}, domain_id=-1)
     options.merge!('priority' => priority, 'weight' => weight, 'port' => port)
-    create_record domain_name, name, 'SRV', value, options
+    create_record domain_name, name, 'SRV', value, options, domain_id
   end
 
-  def create_httpred_record(domain_name, name, value, redirectType = 'STANDARD - 302', description = '', keywords = '', title = '', options = {})
+  def create_httpred_record(domain_name, name, value, redirectType = 'STANDARD - 302', description = '', keywords = '', title = '', options = {}, domain_id=-1)
     options.merge!('redirectType' => redirectType, 'description' => description, 'keywords' => keywords, 'title' => title)
-    create_record domain_name, name, 'HTTPRED', value, options
+    create_record domain_name, name, 'HTTPRED', value, options, domain_id
   end
 
   def update_record(domain, record_id, name, type, value, options = {}, domain_id=-1)
@@ -213,7 +213,6 @@ class DnsMadeEasy
   private
 
   def get(path)
-    puts "making request to #{path}"
     request(path) do |uri|
       Net::HTTP::Get.new(uri)
     end
